@@ -40,6 +40,15 @@ func getMember(c *gin.Context) {
 	c.JSON(200, member)
 
 }
+func getIdMember(c *gin.Context) {
+	id := c.Param("id")
+
+	for _, u := range member {
+		if u.Id == id {
+			c.JSON(200, member)
+		}
+	}
+}
 
 func getCreateMember(c *gin.Context) {
 	var reqBody Member
