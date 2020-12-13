@@ -43,9 +43,9 @@ func getMember(c *gin.Context) {
 func getIdMember(c *gin.Context) {
 	id := c.Param("id")
 
-	for _, u := range member {
+	for i, u := range member {
 		if u.Id == id {
-			c.JSON(200, member)
+			c.JSON(200, member[i])
 		}
 	}
 }
