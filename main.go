@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -32,7 +33,7 @@ func main() {
 
 func homePage(c *gin.Context) {
 	c.JSON(http.StatusOK, map[string]interface{}{
-		"Message": "Success",
+		"Message": "berhasil",
 	})
 }
 
@@ -54,18 +55,17 @@ func getCreateMember(c *gin.Context) {
 	var reqBody Member
 	if err := c.ShouldBindJSON(&reqBody); err != nil {
 		c.JSON(422, gin.H{
-			"error":   true,
-			"message": "Invalid request body",
+			"message": "gagal memuat data",
 		})
 		return
 	}
 
-	reqBody.Id = uuid.New().String() //Menggenerate ID secara otomatis
+	reqBody.Id = strings.Replace(uuid.New().String(), "-", "", -1) //Menggenerate ID secara otomatis
 
 	member = append(member, reqBody)
 
 	c.JSON(200, gin.H{
-		"message": "Success",
+		"message": "berhasil",
 	})
 }
 
@@ -74,8 +74,7 @@ func getEditMember(c *gin.Context) {
 	var reqBody Member
 	if err := c.ShouldBindJSON(&reqBody); err != nil {
 		c.JSON(422, gin.H{
-			"error":   true,
-			"message": "Invalid request body",
+			"message": "gagal memuat data",
 		})
 		return
 	}
@@ -87,13 +86,12 @@ func getEditMember(c *gin.Context) {
 			member[index].Status = reqBody.Status
 
 			c.JSON(200, map[string]interface{}{
-				"message": "Success",
+				"message": "berhasil",
 			})
 			return
 		}
 		c.JSON(404, gin.H{
-			"error":   true,
-			"message": "invalid to edit",
+			"message": "gagal mengedit data",
 		})
 	}
 }
@@ -106,14 +104,13 @@ func getDeleteMember(c *gin.Context) {
 			member = append(member[:i], member[i+1:]...)
 
 			c.JSON(200, map[string]interface{}{
-				"message": "success",
+				"message": "berhasil",
 			})
 			return
 
 		}
 	}
 	c.JSON(404, gin.H{
-		"error":   true,
-		"Message": "invalid delete member data",
+		"message": "gagal menghapus data",
 	})
 }
